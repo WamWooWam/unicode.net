@@ -224,7 +224,7 @@ function* parse(data) {
         const emoji = {
             "sequence": results[1].split(" "),
             "symbol": results[2],
-            "name": results[3],
+            "name": results[3].substr(results[3].indexOf(" ") + 1),
             "index": sortIndex++,
             "group": group,
             "subgroup": subgroup,
