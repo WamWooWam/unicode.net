@@ -21,7 +21,7 @@
     <FileVersion>0.1.2.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>NeoSmart.Unicode.snk</AssemblyOriginatorKeyFile>
+    <!--<AssemblyOriginatorKeyFile>NeoSmart.Unicode.snk</AssemblyOriginatorKeyFile>-->
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net20'">
