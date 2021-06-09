@@ -17,6 +17,7 @@ namespace NeoSmart.Unicode
         /// ZWJ is used to combine multiple emoji codepoints into a single emoji symbol.
         /// </summary>
         public static readonly Codepoint ZeroWidthJoiner = Codepoints.ZWJ;
+        public static readonly string ZeroWidthJoinerStr = ZeroWidthJoiner.ToString();
 
         public static readonly Codepoint ObjectReplacementCharacter = Codepoints.ORC;
 
@@ -54,9 +55,9 @@ namespace NeoSmart.Unicode
         public static string Combine(IEnumerable<SingleEmoji> emoji)
         {
 #if !NET20
-            return string.Join(ZeroWidthJoiner.AsString(), emoji);
+            return string.Join(ZeroWidthJoinerStr, emoji);
 #else
-            return string.Join(ZeroWidthJoiner.AsString(), emoji.Select(e => e.ToString()).ToArray());
+            return string.Join(ZeroWidthJoinerStr, emoji.Select(e => e.ToString()).ToArray());
 #endif
 
         }
@@ -85,7 +86,7 @@ namespace NeoSmart.Unicode
             var codepoints = message.Codepoints();
 
             bool nextMustBeVS = false;
-            string zwj = ZeroWidthJoiner.AsString();
+            string zwj = ZeroWidthJoinerStr;
             string variationSelector = VariationSelector.AsString();
             bool ignoreNext = false;
             int count = 0;
