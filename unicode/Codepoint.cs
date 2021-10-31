@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace NeoSmart.Unicode
         /// <param name="hexValue"></param>
         public Codepoint(string hexValue)
         {
-            if ((hexValue.StartsWith("0x") || hexValue.StartsWith("U+") || hexValue.StartsWith("u+")))
+            if (hexValue.StartsWith("0x") || hexValue.StartsWith("U+") || hexValue.StartsWith("u+"))
             {
                 hexValue = hexValue.Substring(2);
             }
@@ -74,6 +75,31 @@ namespace NeoSmart.Unicode
                 UInt16 low = (UInt16)((newVal & 0x03FF) + 0xDC00);
                 System.Diagnostics.Debug.Assert(low <= 0xDFFF && low >= 0xDC00);
                 yield return low;
+            }
+            else
+            {
+                throw new UnsupportedCodepointException();
+            }
+        }
+
+        public IEnumerable<char> AsChars()
+        {
+            // U+0000 to U+D7FF and U+E000 to U+FFFF
+            if (Value <= 0xFFFF)
+            {
+                yield return (char)Value;
+            }
+            // U+10000 to U+10FFFF
+            else if (Value >= 0x10000 && Value <= 0x10FFFF)
+            {
+                var newVal = Value - 0x010000; // leaving 20 bits
+                var high = (ushort)((newVal >> 10) + 0xD800);
+                Debug.Assert(high <= 0xDBFF && high >= 0xD800);
+                yield return (char)high;
+
+                var low = (ushort)((newVal & 0x03FF) + 0xDC00);
+                Debug.Assert(low <= 0xDFFF && low >= 0xDC00);
+                yield return (char)low;
             }
             else
             {
@@ -212,7 +238,8 @@ namespace NeoSmart.Unicode
 
         public string AsString()
         {
-            return Encoding.UTF8.GetString(AsUtf8().ToArray());
+            //return Encoding.UTF8.GetString(AsUtf8().ToArray());
+            return string.Concat(AsChars());
         }
 
         public bool IsIn(Range range)

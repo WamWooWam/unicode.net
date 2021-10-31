@@ -17,7 +17,7 @@ namespace NeoSmart.Unicode
         /// ZWJ is used to combine multiple emoji codepoints into a single emoji symbol.
         /// </summary>
         public static readonly Codepoint ZeroWidthJoiner = Codepoints.ZWJ;
-        public static readonly string ZeroWidthJoinerStr = ZeroWidthJoiner.ToString();
+        public static readonly string ZeroWidthJoinerStr = ZeroWidthJoiner.AsString();
 
         public static readonly Codepoint ObjectReplacementCharacter = Codepoints.ORC;
 
@@ -27,6 +27,7 @@ namespace NeoSmart.Unicode
         /// The Emoji VS indicates that the preceding (non-emoji) unicode codepoint should be represented as an emoji.
         /// </summary>
         public static readonly Codepoint VariationSelector = Codepoints.VariationSelectors.EmojiSymbol;
+        public static readonly string VariationSelectorStr = VariationSelector.AsString();
 
         public static class SkinTones
         {
@@ -87,7 +88,7 @@ namespace NeoSmart.Unicode
 
             bool nextMustBeVS = false;
             string zwj = ZeroWidthJoinerStr;
-            string variationSelector = VariationSelector.AsString();
+            string variationSelector = VariationSelectorStr;
             bool ignoreNext = false;
             int count = 0;
             foreach (var cp in codepoints)
@@ -110,6 +111,7 @@ namespace NeoSmart.Unicode
                         return false;
                     }
                 }
+
                 if (cp.In(SkinTones.All))
                 {
                     // Don't count the skin tone as part of the length
